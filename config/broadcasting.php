@@ -40,7 +40,7 @@ return [
                 'encrypted' => true,
                 'host' => '127.0.0.1',
                 'port' => env('PUSHER_PORT', 6001),
-                'scheme' => 'http',
+                'scheme' => 'https',
             ],
         ],
 
