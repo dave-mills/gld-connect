@@ -25,6 +25,14 @@
                 >
             </form>
         </h1>
+        <div class="d-flex justify-content-end">
+            <div
+                class="btn btn-sm"
+                @click="reset"
+            >
+                Reset
+            </div>
+        </div>
     </div>
 </template>
 
@@ -65,10 +73,17 @@
             refocus: function() {
                 document.getElementById('themessage').focus();
             },
-            send: function(e) {
+            send: function() {
                 console.log('someone is sending a message');
                 axios.post('/messages', {'text': this.themessage})
                 this.themessage = ''
+            },
+            reset: function() {
+                console.log("resetting");
+                this.messages.forEach((message) => {
+                    axios.delete('/messages/'+message.id)
+                })
+                this.messages = [];
             }
         }
     }

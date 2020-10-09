@@ -1938,6 +1938,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -1969,12 +1977,19 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     refocus: function refocus() {
       document.getElementById('themessage').focus();
     },
-    send: function send(e) {
+    send: function send() {
       console.log('someone is sending a message');
       axios.post('/messages', {
         'text': this.themessage
       });
       this.themessage = '';
+    },
+    reset: function reset() {
+      console.log("resetting");
+      this.messages.forEach(function (message) {
+        axios["delete"]('/messages/' + message.id);
+      });
+      this.messages = [];
     }
   }
 });
@@ -48018,6 +48033,12 @@ var render = function() {
             })
           ]
         )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "d-flex justify-content-end" }, [
+        _c("div", { staticClass: "btn btn-sm", on: { click: _vm.reset } }, [
+          _vm._v("\n            Reset\n        ")
+        ])
       ])
     ]
   )
