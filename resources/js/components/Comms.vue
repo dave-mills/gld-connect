@@ -54,7 +54,7 @@
             this.refocus();
 
             console.log("are you still there?")
-            this.$echo.channel('Chat')
+            this.$echo.private('Chat')
                 .listen('SomeoneEnteredTheRoom', (e) => {
                     console.log("someone entered the room");
                 })
