@@ -32,6 +32,6 @@ class SomeoneEnteredTheRoom implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('Chat');
+        return new Channel('Chat');
     }
 }

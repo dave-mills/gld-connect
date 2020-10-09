@@ -1961,7 +1961,7 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
     this.refocus();
     console.log("are you still there?");
-    this.$echo["private"]('Chat').listen('SomeoneEnteredTheRoom', function (e) {
+    this.$echo.channel('Chat').listen('SomeoneEnteredTheRoom', function (e) {
       console.log("someone entered the room");
     }).listen('SomeoneSentAMessage', function (e) {
       console.log("someone sent a message");
