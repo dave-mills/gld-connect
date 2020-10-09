@@ -1,5 +1,5 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('<link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap');
 
 // Variables
 @import 'variables';
@@ -8,10 +8,19 @@
 @import '~bootstrap/scss/bootstrap';
 
 
-body, .bg-black {
+body, .bg-black, input {
     background-color: black;
 }
 
 .full-height {
     height: 100vh;
+}
+
+input {
+    border: none;
+    color: lightblue;
+}
+
+*:focus {
+    outline: none;
 }

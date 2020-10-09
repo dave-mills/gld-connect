@@ -5,8 +5,10 @@
  */
 
 require('./bootstrap');
+require('./echo');
 
 window.Vue = require('vue');
+import VueEcho from 'vue-echo-laravel';
 
 /**
  * The following block of code may be used to automatically register your
@@ -20,6 +22,19 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('comms', require('./components/Comms.vue').default);
+
+
+Vue.use(VueEcho, {
+    broadcaster: 'pusher',
+    key: process.env.MIX_PUSHER_APP_KEY,
+    wsHost: window.location.hostname,
+    wsPort: process.env.MIX_PUSHER_PROXY_PORT,
+    wssPort: process.env.MIX_PUSHER_PROXY_PORT,
+    disableStats: true,
+    encrypted: true,
+    enabledTransports: ['ws', 'wss'],
+});
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

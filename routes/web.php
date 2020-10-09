@@ -1,5 +1,7 @@
 <?php
 
+use App\Events\SomeoneEnteredTheRoom;
+use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +18,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('entered', function () {
+    SomeoneEnteredTheRoom::dispatch();
+});
+
+Route::resource('messages', MessageController::class)->only([
+    'index', 'store', 'update', 'destroy'
+]);
