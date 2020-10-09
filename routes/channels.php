@@ -12,6 +12,6 @@ use Illuminate\Support\Facades\Broadcast;
 | used to check if an authenticated user can listen to the channel.
 |
 */
-Broadcast::channel('App.Chat', function () {
+Broadcast::channel('Chat', function () {
     return true;
 });
