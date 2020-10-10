@@ -1966,7 +1966,13 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     }).listen('SomeoneSentAMessage', function (e) {
       console.log("someone sent a message");
 
-      _this.messages.push(e.message);
+      var messageIds = _this.messages.map(function (message) {
+        return message.id;
+      });
+
+      if (!messageIds.includes(e.message.id)) {
+        _this.messages.push(e.message);
+      }
     });
     axios.post("/entered");
     axios.get('/messages').then(function (response) {
@@ -1982,6 +1988,7 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
       axios.post('/messages', {
         'text': this.themessage
       });
+      this.messages.push(this.themessage);
       this.themessage = '';
     },
     reset: function reset() {

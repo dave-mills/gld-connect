@@ -60,7 +60,10 @@
                 })
                 .listen('SomeoneSentAMessage', (e) => {
                     console.log("someone sent a message");
-                    this.messages.push(e.message)
+                    const messageIds = this.messages.map((message) => {return message.id})
+                    if(!messageIds.includes(e.message.id)){
+                        this.messages.push(e.message)
+                    }
                 })
 
             axios.post("/entered")
@@ -76,6 +79,7 @@
             send: function() {
                 console.log('someone is sending a message');
                 axios.post('/messages', {'text': this.themessage})
+                this.messages.push(this.themessage);
                 this.themessage = ''
             },
             reset: function() {
