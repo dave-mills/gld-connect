@@ -60252,7 +60252,6 @@ Vue.use(vue_echo_laravel__WEBPACK_IMPORTED_MODULE_0___default.a, {
   wsPort: "6001",
   wssPort: "6001",
   disableStats: true,
-  encrypted: true,
   enabledTransports: ['ws', 'wss']
 });
 /**
@@ -60392,17 +60391,16 @@ __webpack_require__.r(__webpack_exports__);
  * allows your team to easily build robust real-time web applications.
  */
 
-window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
-window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
-  broadcaster: 'pusher',
-  key: "zisuedfryhzsieduzxcvzxcvfghslieufhsikdjf",
-  wsHost: window.location.hostname,
-  wsPort: "6001",
-  wssPort: "6001",
-  disableStats: true,
-  encrypted: true,
-  enabledTransports: ['ws', 'wss']
-});
+window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js"); // window.Echo = new Echo({
+//     broadcaster: 'pusher',
+//     key: process.env.MIX_PUSHER_APP_KEY,
+//     wsHost: window.location.hostname,
+//     wsPort: process.env.MIX_PUSHER_PROXY_PORT,
+//     wssPort: process.env.MIX_PUSHER_PROXY_PORT,
+//     disableStats: true,
+//     encrypted: true,
+//     enabledTransports: ['ws', 'wss'],
+// });
 
 /***/ }),
 

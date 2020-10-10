@@ -31,7 +31,6 @@ Vue.use(VueEcho, {
     wsPort: process.env.MIX_PUSHER_PROXY_PORT,
     wssPort: process.env.MIX_PUSHER_PROXY_PORT,
     disableStats: true,
-    encrypted: true,
     enabledTransports: ['ws', 'wss'],
 });
 
