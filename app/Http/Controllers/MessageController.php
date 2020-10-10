@@ -30,7 +30,7 @@ class MessageController extends Controller
     {
         $message = Message::create($request->validated());
         SomeoneSentAMessage::dispatch($message);
-        return response('ok', 200);
+        return response($message->toJson(), 200);
     }
 
     /**

@@ -1984,11 +1984,14 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
       document.getElementById('themessage').focus();
     },
     send: function send() {
+      var _this2 = this;
+
       console.log('someone is sending a message');
       axios.post('/messages', {
         'text': this.themessage
+      }).then(function (response) {
+        _this2.messages.push(response.data);
       });
-      this.messages.push(this.themessage);
       this.themessage = '';
     },
     reset: function reset() {

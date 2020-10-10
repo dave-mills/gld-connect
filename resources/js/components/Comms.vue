@@ -79,7 +79,10 @@
             send: function() {
                 console.log('someone is sending a message');
                 axios.post('/messages', {'text': this.themessage})
-                this.messages.push(this.themessage);
+                    .then((response) => {
+                        this.messages.push(response.data);
+                    })
+
                 this.themessage = ''
             },
             reset: function() {
