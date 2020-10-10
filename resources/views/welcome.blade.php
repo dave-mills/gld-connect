@@ -15,7 +15,7 @@
     </head>
     <body class="antialiased full-height">
 
-        <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0" id='app'>
+        <div class="relative flex h-100 items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0" id='app'>
             <comms user-id="1"></comms>
         </div>
     </body>

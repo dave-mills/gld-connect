@@ -17,7 +17,7 @@ class MessageController extends Controller
      */
     public function index()
     {
-        return Message::orderBy('created_at', 'desc')->limit(15)->get();
+        return Message::all()->toJson();
     }
 
     /**

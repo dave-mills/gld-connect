@@ -2001,11 +2001,11 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     });
     axios.post("/entered");
     axios.get('/messages').then(function (response) {
-      var messages = response.data;
-      messages.sort(function (a, b) {
-        if (a.created_at < b.created_at) return -1;
-        if (a.created_at > b.created_at) return 1;
-      });
+      // var messages = response.data
+      // messages.sort(function(a, b) {
+      //     if(a.created_at < b.created_at) return -1;
+      //     if(a.created_at > b.created_at) return 1;
+      // })
       _this.messages = response.data;
     });
   },
@@ -43688,13 +43688,16 @@ var render = function() {
     "div",
     {
       staticClass:
-        "container full-height d-flex flex-column justify-content-center align-items-center",
+        "container h-100 d-flex flex-column justify-content-center align-items-center",
       attrs: { id: "theroom" }
     },
     [
       _c(
         "div",
-        { staticClass: "h-75 text-light", attrs: { id: "output" } },
+        {
+          staticClass: "h-75 text-light d-flex flex-column justify-content-end",
+          attrs: { id: "output" }
+        },
         [
           _vm._l(_vm.messages, function(message) {
             return _c(

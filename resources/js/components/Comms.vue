@@ -1,11 +1,11 @@
 <template>
     <div
         id="theroom"
-        class="container full-height d-flex flex-column justify-content-center align-items-center"
+        class="container h-100 d-flex flex-column justify-content-center align-items-center"
     >
         <div
             id="output"
-            class="h-75 text-light"
+            class="h-75 text-light d-flex flex-column justify-content-end"
         >
             <div
                 v-for="message in messages"
@@ -96,11 +96,11 @@
 
             axios.get('/messages')
                 .then(response => {
-                    var messages = response.data
-                    messages.sort(function(a, b) {
-                        if(a.created_at < b.created_at) return -1;
-                        if(a.created_at > b.created_at) return 1;
-                    })
+                    // var messages = response.data
+                    // messages.sort(function(a, b) {
+                    //     if(a.created_at < b.created_at) return -1;
+                    //     if(a.created_at > b.created_at) return 1;
+                    // })
                     this.messages = response.data
                 })
 
