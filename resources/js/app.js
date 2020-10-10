@@ -27,7 +27,7 @@ Vue.component('comms', require('./components/Comms.vue').default);
 Vue.use(VueEcho, {
     broadcaster: 'pusher',
     key: process.env.MIX_PUSHER_APP_KEY,
-    wsHost: process.env.MIX_PUSHER_LOCATION
+    wsHost: process.env.MIX_PUSHER_LOCATION,
     wsPort: process.env.MIX_PUSHER_PROXY_PORT,
     wssPort: process.env.MIX_PUSHER_PROXY_PORT,
     disableStats: true,
