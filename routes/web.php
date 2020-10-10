@@ -1,9 +1,11 @@
 <?php
 
-use App\Events\SomeoneEnteredTheRoom;
-use App\Http\Controllers\MessageController;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Events\SomeoneEnteredTheRoom;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HelperController;
+use App\Http\Controllers\MessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +19,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    Auth::loginUsingId(1);
+    $user = User::create(['name' => HelperController::generateRandomString(6)]);
+    Auth::login($user);
     return view('welcome');
 });
 

@@ -1946,6 +1946,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -1953,7 +1958,8 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
   data: function data() {
     return {
       'messages': [],
-      'themessage': ''
+      'themessage': '',
+      'users': []
     };
   },
   mounted: function mounted() {
@@ -1961,26 +1967,51 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
     this.refocus();
     console.log("are you still there?");
-    this.$echo.channel('Chat').listen('SomeoneEnteredTheRoom', function (e) {
+    this.$echo.join('Chat').here(function (users) {
+      console.log('there are currently ' + users.length + 'users in the room');
+      _this.users = users;
+    }).listen('SomeoneEnteredTheRoom', function (e) {
       console.log("someone entered the room");
     }).listen('SomeoneSentAMessage', function (e) {
-      console.log("someone sent a message");
+      console.log("someone sent a message with id " + e.message.id);
+      setTimeout(function () {
+        var messageIds = _this.messages.map(function (message) {
+          return message.id;
+        });
 
-      var messageIds = _this.messages.map(function (message) {
-        return message.id;
-      });
+        console.log('message ids = ');
+        console.log(messageIds);
 
-      if (!messageIds.includes(e.message.id)) {
-        _this.messages.push(e.message);
-      }
+        if (!messageIds.includes(e.message.id)) {
+          _this.messages.push(e.message);
+        }
+      }, 500);
+    }).joining(function (user) {
+      console.log(user.name + 'has entered the room');
+
+      _this.users.push(user);
+
+      console.log('there are ' + _this.users.length + ' in the room');
+    }).leaving(function (user) {
+      console.log(user.name + 'has left the room');
+
+      _this.users.splice(_this.users.indexOf(user), 1);
+
+      console.log('there are ' + _this.users.length + ' in the room');
     });
     axios.post("/entered");
     axios.get('/messages').then(function (response) {
-      return _this.messages = response.data;
+      var messages = response.data;
+      messages.sort(function (a, b) {
+        if (a.created_at < b.created_at) return -1;
+        if (a.created_at > b.created_at) return 1;
+      });
+      _this.messages = response.data;
     });
   },
   methods: {
     refocus: function refocus() {
+      //if(this.themessage.length > 0) this.send()
       document.getElementById('themessage').focus();
     },
     send: function send() {
@@ -43657,7 +43688,8 @@ var render = function() {
     "div",
     {
       staticClass:
-        "container full-height d-flex flex-column justify-content-center align-items-center"
+        "container full-height d-flex flex-column justify-content-center align-items-center",
+      attrs: { id: "theroom" }
     },
     [
       _c(
@@ -43665,16 +43697,18 @@ var render = function() {
         { staticClass: "h-75 text-light", attrs: { id: "output" } },
         [
           _vm._l(_vm.messages, function(message) {
-            return _c("div", { key: message.id }, [
-              _vm._v("\n            " + _vm._s(message.text) + "\n        ")
-            ])
+            return _c(
+              "div",
+              { key: message.id, staticStyle: { "max-width": "95vw" } },
+              [_vm._v("\n            " + _vm._s(message.text) + "\n        ")]
+            )
           }),
           _vm._v("\n        ...\n    ")
         ],
         2
       ),
       _vm._v(" "),
-      _c("h1", { staticStyle: { height: "40px" } }, [
+      _c("h1", [
         _c(
           "form",
           {
@@ -43696,6 +43730,7 @@ var render = function() {
                   expression: "themessage"
                 }
               ],
+              staticStyle: { height: "40px", "max-width": "90vw" },
               attrs: { id: "themessage", type: "text" },
               domProps: { value: _vm.themessage },
               on: {
@@ -55898,7 +55933,7 @@ module.exports = function(module) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function(process) {/* harmony import */ var vue_echo_laravel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-echo-laravel */ "./node_modules/vue-echo-laravel/dist/build.js");
+/* harmony import */ var vue_echo_laravel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-echo-laravel */ "./node_modules/vue-echo-laravel/dist/build.js");
 /* harmony import */ var vue_echo_laravel__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_echo_laravel__WEBPACK_IMPORTED_MODULE_0__);
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -55922,10 +55957,16 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('comms', __webpack_require__(/*! ./components/Comms.vue */ "./resources/js/components/Comms.vue")["default"]);
+var pusherLocation = '';
+
+if (true) {
+  pusherLocation = "gld.test";
+} else {}
+
 Vue.use(vue_echo_laravel__WEBPACK_IMPORTED_MODULE_0___default.a, {
   broadcaster: 'pusher',
   key: "zisuedfryhzsieduzxcvzxcvfghslieufhsikdjf",
-  wsHost: process.env.MIX_PUSHER_LOCATION,
+  wsHost: pusherLocation,
   wsPort: "6001",
   wssPort: "6001",
   disableStats: true,
@@ -55940,7 +55981,6 @@ Vue.use(vue_echo_laravel__WEBPACK_IMPORTED_MODULE_0___default.a, {
 var app = new Vue({
   el: '#app'
 });
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/process/browser.js */ "./node_modules/process/browser.js")))
 
 /***/ }),
 

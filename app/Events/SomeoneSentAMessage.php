@@ -35,6 +35,6 @@ class SomeoneSentAMessage implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('Chat');
+        return new PresenceChannel('Chat');
     }
 }

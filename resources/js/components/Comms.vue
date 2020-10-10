@@ -1,5 +1,8 @@
 <template>
-    <div class="container full-height d-flex flex-column justify-content-center align-items-center">
+    <div
+        id="theroom"
+        class="container full-height d-flex flex-column justify-content-center align-items-center"
+    >
         <div
             id="output"
             class="h-75 text-light"
@@ -7,12 +10,13 @@
             <div
                 v-for="message in messages"
                 :key="message.id"
+                style="max-width: 95vw;"
             >
                 {{ message.text }}
             </div>
             ...
         </div>
-        <h1 style="height: 40px">
+        <h1>
             <form
                 action="#"
                 @submit.prevent="send"
@@ -20,6 +24,7 @@
                 <input
                     id="themessage"
                     v-model="themessage"
+                    style="height: 40px; max-width: 90vw"
                     type="text"
                     @blur="refocus"
                 >
@@ -47,6 +52,7 @@
             return {
                 'messages': [],
                 'themessage': '',
+                'users': [],
             }
         },
         mounted() {
@@ -54,26 +60,54 @@
             this.refocus();
 
             console.log("are you still there?")
-            this.$echo.channel('Chat')
+            this.$echo.join('Chat')
+                .here(users => {
+                    console.log('there are currently ' + users.length + 'users in the room')
+                    this.users = users
+                })
                 .listen('SomeoneEnteredTheRoom', (e) => {
                     console.log("someone entered the room");
                 })
                 .listen('SomeoneSentAMessage', (e) => {
-                    console.log("someone sent a message");
-                    const messageIds = this.messages.map((message) => {return message.id})
-                    if(!messageIds.includes(e.message.id)){
-                        this.messages.push(e.message)
-                    }
+                    console.log("someone sent a message with id " + e.message.id);
+                    setTimeout(() => {
+                        const messageIds = this.messages.map((message) => {return message.id})
+                        console.log('message ids = ')
+                        console.log(messageIds)
+                        if(!messageIds.includes(e.message.id)){
+                            this.messages.push(e.message)
+                        }
+                    }, 500);
                 })
+                .joining(user => {
+                    console.log(user.name + 'has entered the room')
+                    this.users.push(user)
+                    console.log('there are ' + this.users.length + ' in the room')
+                })
+                .leaving(user => {
+                    console.log(user.name + 'has left the room')
+                    this.users.splice(this.users.indexOf(user), 1)
+                    console.log('there are ' + this.users.length + ' in the room')
+
+                })
+
 
             axios.post("/entered")
 
             axios.get('/messages')
-                .then(response => this.messages = response.data)
+                .then(response => {
+                    var messages = response.data
+                    messages.sort(function(a, b) {
+                        if(a.created_at < b.created_at) return -1;
+                        if(a.created_at > b.created_at) return 1;
+                    })
+                    this.messages = response.data
+                })
 
         },
         methods: {
             refocus: function() {
+                //if(this.themessage.length > 0) this.send()
                 document.getElementById('themessage').focus();
             },
             send: function() {

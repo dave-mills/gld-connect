@@ -23,11 +23,18 @@ import VueEcho from 'vue-echo-laravel';
 
 Vue.component('comms', require('./components/Comms.vue').default);
 
+var pusherLocation = ''
+
+if(process.env.MIX_PUSHER_LOCATION) {
+    pusherLocation = process.env.MIX_PUSHER_LOCATION
+} else {
+    pusherLocation = window.location.hostname
+}
 
 Vue.use(VueEcho, {
     broadcaster: 'pusher',
     key: process.env.MIX_PUSHER_APP_KEY,
-    wsHost: process.env.MIX_PUSHER_LOCATION,
+    wsHost: pusherLocation,
     wsPort: process.env.MIX_PUSHER_PROXY_PORT,
     wssPort: process.env.MIX_PUSHER_PROXY_PORT,
     disableStats: true,
