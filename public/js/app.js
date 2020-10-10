@@ -1988,7 +1988,7 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
       console.log('someone is sending a message');
       axios.post('/messages', {
-        'text': this.themessage
+        'text': this.themessage.toLowerCase()
       }).then(function (response) {
         _this2.messages.push(response.data);
       });

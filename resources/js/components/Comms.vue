@@ -78,7 +78,7 @@
             },
             send: function() {
                 console.log('someone is sending a message');
-                axios.post('/messages', {'text': this.themessage})
+                axios.post('/messages', {'text': this.themessage.toLowerCase()})
                     .then((response) => {
                         this.messages.push(response.data);
                     })
