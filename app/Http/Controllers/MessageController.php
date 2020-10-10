@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AMessageWasDeleted;
 use App\Events\SomeoneEnteredTheRoom;
 use App\Events\SomeoneSentAMessage;
 use App\Http\Requests\MessageRequest;
@@ -67,6 +68,7 @@ class MessageController extends Controller
      */
     public function destroy(Message $message)
     {
+        AMessageWasDeleted::dispatch($message);
         $message->delete();
         return response('ok', 200);
     }

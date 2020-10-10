@@ -79,6 +79,11 @@
                         }
                     }, 500);
                 })
+                .listen('AMessageWasDeleted', (e) => {
+                    console.log('a message was deleted')
+                    console.log(e.message)
+                    this.messages.splice(this.messages.indexOf(e.message), 1)
+                })
                 .joining(user => {
                     console.log(user.name + 'has entered the room')
                     this.users.push(user)

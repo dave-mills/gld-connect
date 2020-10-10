@@ -1986,6 +1986,11 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
           _this.messages.push(e.message);
         }
       }, 500);
+    }).listen('AMessageWasDeleted', function (e) {
+      console.log('a message was deleted');
+      console.log(e.message);
+
+      _this.messages.splice(_this.messages.indexOf(e.message), 1);
     }).joining(function (user) {
       console.log(user.name + 'has entered the room');
 
