@@ -1,15 +1,17 @@
 <template>
     <div
         id="theroom"
-        class="container h-100 d-flex flex-column justify-content-center align-items-center"
+        class=" h-100 d-flex flex-column justify-content-center align-items-center mx-auto"
+        style="width: 90%"
     >
         <div
             id="output"
-            class="h-75 text-light d-flex flex-column justify-content-end"
+            class="w-100 h-100 text-light d-flex flex-column justify-content-end"
         >
             <div
                 v-for="message in messages"
                 :key="message.id"
+                :class="[message.world ? 'world' : '', 'message']"
                 style="max-width: 95vw;"
             >
                 {{ message.text }}
@@ -53,6 +55,7 @@
                 'messages': [],
                 'themessage': '',
                 'users': [],
+                'worldMessageId': 0
             }
         },
         mounted() {
@@ -83,17 +86,23 @@
                     console.log('a message was deleted')
                     console.log(e.message)
                     this.messages.splice(this.messages.indexOf(e.message), 1)
+
+                    //This almost certainly will result in the last message appearing exactly once,
+                    this.newWorldMessage('the air around you thickens for a moment')
+                    this.newWorldMessage('###reset/initialisation complete. please carry on/take no notice of us###')
+
                 })
                 .joining(user => {
                     console.log(user.name + 'has entered the room')
                     this.users.push(user)
                     console.log('there are ' + this.users.length + ' in the room')
+                    this.newWorldMessage(`someone has entered the room`)
                 })
                 .leaving(user => {
                     console.log(user.name + 'has left the room')
                     this.users.splice(this.users.indexOf(user), 1)
                     console.log('there are ' + this.users.length + ' in the room')
-
+                    this.newWorldMessage('someone has left the room')
                 })
 
 
@@ -130,7 +139,18 @@
                     axios.delete('/messages/'+message.id)
                 })
                 this.messages = [];
+
+            },
+            newWorldMessage: function(text) {
+                this.worldMessageId++
+
+                this.messages.push({
+                    'id': `world${this.worldMessageId}`,
+                    'text': text,
+                    'world': true,
+                })
             }
+
         }
     }
 </script>

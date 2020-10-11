@@ -10962,3 +10962,13 @@ input {
   }
 }
 
+.message.voice {
+  text-align: left;
+}
+
+.message.world {
+  text-align: right;
+  color: lightgreen;
+  align-self: flex-end;
+}
+

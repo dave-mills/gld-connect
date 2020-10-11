@@ -49,3 +49,14 @@ input {
 	from { opacity: 1; }
 	to { opacity: 0; }
 }
+
+.message.voice {
+    text-align: left;
+
+}
+
+.message.world {
+    text-align: right;
+    color: lightgreen;
+    align-self: flex-end;
+}

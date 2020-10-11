@@ -1951,6 +1951,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -1959,7 +1961,8 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     return {
       'messages': [],
       'themessage': '',
-      'users': []
+      'users': [],
+      'worldMessageId': 0
     };
   },
   mounted: function mounted() {
@@ -1990,19 +1993,28 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
       console.log('a message was deleted');
       console.log(e.message);
 
-      _this.messages.splice(_this.messages.indexOf(e.message), 1);
+      _this.messages.splice(_this.messages.indexOf(e.message), 1); //This almost certainly will result in the last message appearing exactly once,
+
+
+      _this.newWorldMessage('the air around you thickens for a moment');
+
+      _this.newWorldMessage('###reset/initialisation complete. please carry on/take no notice of us###');
     }).joining(function (user) {
       console.log(user.name + 'has entered the room');
 
       _this.users.push(user);
 
       console.log('there are ' + _this.users.length + ' in the room');
+
+      _this.newWorldMessage("someone has entered the room");
     }).leaving(function (user) {
       console.log(user.name + 'has left the room');
 
       _this.users.splice(_this.users.indexOf(user), 1);
 
       console.log('there are ' + _this.users.length + ' in the room');
+
+      _this.newWorldMessage('someone has left the room');
     });
     axios.post("/entered");
     axios.get('/messages').then(function (response) {
@@ -2036,6 +2048,14 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
         axios["delete"]('/messages/' + message.id);
       });
       this.messages = [];
+    },
+    newWorldMessage: function newWorldMessage(text) {
+      this.worldMessageId++;
+      this.messages.push({
+        'id': "world".concat(this.worldMessageId),
+        'text': text,
+        'world': true
+      });
     }
   }
 });
@@ -43693,21 +43713,27 @@ var render = function() {
     "div",
     {
       staticClass:
-        "container h-100 d-flex flex-column justify-content-center align-items-center",
+        " h-100 d-flex flex-column justify-content-center align-items-center mx-auto",
+      staticStyle: { width: "90%" },
       attrs: { id: "theroom" }
     },
     [
       _c(
         "div",
         {
-          staticClass: "h-75 text-light d-flex flex-column justify-content-end",
+          staticClass:
+            "w-100 h-100 text-light d-flex flex-column justify-content-end",
           attrs: { id: "output" }
         },
         [
           _vm._l(_vm.messages, function(message) {
             return _c(
               "div",
-              { key: message.id, staticStyle: { "max-width": "95vw" } },
+              {
+                key: message.id,
+                class: [message.world ? "world" : "", "message"],
+                staticStyle: { "max-width": "95vw" }
+              },
               [_vm._v("\n            " + _vm._s(message.text) + "\n        ")]
             )
           }),
